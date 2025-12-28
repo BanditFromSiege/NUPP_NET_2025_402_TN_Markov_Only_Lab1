@@ -137,6 +137,28 @@ class Program
                 Console.WriteLine();
             }
         }
+        Console.WriteLine();
+
+        CrudService.Save("MilitaryVehicle.json");
+
+        Console.WriteLine();
+
+        var CrudService2 = new CrudService<MilitaryVehicle>();
+
+        CrudService2.Load("MilitaryVehicle.json");
+
+        Console.WriteLine();
+
+        i = 0;
+        foreach (var el in CrudService2.ReadAll())
+        {
+            el.PrintInfo();
+            ++i;
+            if (i % 3 == 0)
+            {
+                Console.WriteLine();
+            }
+        }
 
         Console.WriteLine("\nНатисніть, щоб завершити програму...");
         Console.ReadLine();
