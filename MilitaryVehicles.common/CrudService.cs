@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace MilitaryVehicles.common
 {
@@ -60,6 +62,47 @@ namespace MilitaryVehicles.common
             {
                 Console.WriteLine($"Не вдалося знайти {element.GetType().Name} моделі {element.Model} з ідентифікатором {element.Id} для видалення");
             }
+        }
+
+        public void Save(string filePath)
+        {
+            var options = new JsonSerializerOptions
+            {
+                WriteIndented = true
+            };
+
+            string json = JsonSerializer.Serialize(elements, options);
+            File.WriteAllText(filePath, json);
+
+            Console.WriteLine($"Дані збережено у файл: {filePath}");
+        }
+
+        public void Load(string filePath)
+        {
+            if (!File.Exists(filePath))
+            {
+                Console.WriteLine("Файл не знайдено");
+                return;
+            }
+
+            string json = File.ReadAllText(filePath);
+
+            var loadedElements = JsonSerializer.Deserialize<Dictionary<Guid, T>>(json);
+
+            if (loadedElements == null)
+            {
+                Console.WriteLine("Не вдалося завантажити дані");
+                return;
+            }
+
+            elements.Clear();
+
+            foreach (var pair in loadedElements)
+            {
+                elements[pair.Key] = pair.Value;
+            }
+
+            Console.WriteLine($"Дані завантажено з файлу: {filePath}");
         }
     }
 }

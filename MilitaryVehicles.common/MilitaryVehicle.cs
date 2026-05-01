@@ -2,10 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace MilitaryVehicles.common
 {
+
+    [JsonPolymorphic(TypeDiscriminatorPropertyName = "$type")]
+    [JsonDerivedType(typeof(Tank), "Tank")]
+    [JsonDerivedType(typeof(Helicopter), "Helicopter")]
+    [JsonDerivedType(typeof(Destroyer), "Destroyer")]
     public abstract class MilitaryVehicle
     {
         public Guid Id { get; set; } //Унікальний ідентифікатор

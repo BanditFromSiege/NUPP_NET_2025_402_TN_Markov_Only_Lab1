@@ -13,5 +13,7 @@ namespace MilitaryVehicles.common
         IEnumerable<T> ReadAll();
         void Update(T element);
         void Remove(T element);
+        void Save(string filePath);
+        void Load(string filePath);
     }
 }
